@@ -17,21 +17,6 @@ export default function Home() {
           별도의 Client Component입니다.
         </p>
         <Counter />
-
-        <br />
-        <Link
-          href="/about"
-          className="text-sm font-medium text-zinc-950 underline underline-offset-4 dark:text-zinc-50"
-        >
-          {' '}
-          /about 페이지로 이동하기
-        </Link>
-        <Link
-          href="/products"
-          className="text-sm font-medium text-zinc-950 underline underline-offset-4 dark:text-zinc-50"
-        >
-          /products 페이지로 이동하기
-        </Link>
       </main>
     </div>
   )
