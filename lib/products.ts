@@ -1,3 +1,12 @@
+import { connectDB } from '@/lib/mongodb'
+import mongoose, { Schema, models } from 'mongoose'
+
+const LikeSchema = new Schema({
+  _id: { type: String, required: true },
+  likes: { type: Number, default: 0 },
+})
+const LikeModel = models.Like || mongoose.model('Like', LikeSchema)
+
 export type Product = {
   id: string
   name: string
@@ -20,11 +29,21 @@ function delay(ms: number) {
 
 export async function getProducts(): Promise<Product[]> {
   await delay(700)
+  await connectDB()
+  const likeDocs = await LikeModel.find().lean()
+  likeDocs.forEach((d) => {
+    const target = products.find((p) => p.id === d._id)
+    if (target) target.likes = d.likes
+  })
   return products
 }
 
 export async function getProduct(id: string): Promise<Product | undefined> {
   await delay(400)
+  await connectDB()
+  const likeDoc = await LikeModel.findById(id).lean()
+  const target = products.find((p) => p.id === id)
+  if (target && likeDoc) target.likes = likeDoc.likes
   return products.find((p) => p.id === id)
 }
 
@@ -33,5 +52,11 @@ export async function likeProduct(id: string): Promise<number> {
   const product = products.find((p) => p.id === id)
   if (!product) return 0
   product.likes += 1
+  await connectDB()
+  await LikeModel.findByIdAndUpdate(
+    id,
+    { likes: product.likes },
+    { upsert: true },
+  )
   return product.likes
 }
