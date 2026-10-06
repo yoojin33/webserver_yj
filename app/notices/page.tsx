@@ -1,6 +1,8 @@
 import { getNotices } from '@/lib/notice'
 import Link from 'next/link'
 
+export const dynamic = 'force-dynamic'
+
 export default async function NoticesPage() {
   const notices = await getNotices()
 
@@ -28,7 +30,7 @@ export default async function NoticesPage() {
                 {n.title}
               </p>
               <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                {n.author} · {n.createdAt}
+                {n.author} · {n.createdAt} · {n.views}
               </p>
             </Link>
           </li>
