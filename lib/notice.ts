@@ -3,9 +3,10 @@ import { connectDB } from './mongodb'
 
 await NoticeModel.insertMany
 export type Notice = {
+  authorId: string
+  authorName: string
   id: string
   title: string
-  author: string
   content: string
   createdAt: string
   views: number
@@ -14,8 +15,9 @@ export type Notice = {
 type NoticeDocLike = {
   _id: unknown
   title: string
-  author: string
   content: string
+  authorId: unknown
+  authorName: string
   createdAt?: Date
   views?: number
 }
@@ -24,10 +26,11 @@ function toNotice(doc: NoticeDocLike): Notice {
   return {
     id: String(doc._id),
     title: doc.title,
-    author: doc.author,
     content: doc.content,
     createdAt: (doc.createdAt ?? new Date()).toISOString().slice(0, 10),
     views: doc.views ?? 0,
+    authorId: String(doc.authorId),
+    authorName: doc.authorName,
   }
 }
 
@@ -73,22 +76,17 @@ export async function getNotice(id: string): Promise<Notice | undefined> {
 
 export async function createNotice(input: {
   title: string
-  author: string
+  //author: string
   content: string
+  authorId: string
+  authorName: string
 }): Promise<Notice> {
   await connectDB()
   const doc = await NoticeModel.create(input)
   return toNotice(doc as unknown as NoticeDocLike)
+}
 
-  /*await delay(300)
-  const notice: Notice = {
-    id: String(nextId++),
-    title: input.title,
-    author: input.author,
-    content: input.content,
-    createdAt: new Date().toISOString().slice(0, 10),
-    views: 0,
-  }
-  notices.push(notice)
-  return notice*/
+export async function deleteNotice(id: string): Promise<void> {
+  await connectDB()
+  await NoticeModel.findByIdAndDelete(id)
 }

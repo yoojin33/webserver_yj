@@ -18,6 +18,9 @@ export async function createUser(input: {
     throw new Error('이미 가입된 이메일입니다.')
   }
 
+  // 여기서 딱 한 번 해싱하고 나면, 이후에는 원본 비밀번호를 서버 어디에도
+  // 저장하지 않습니다. 로그인 시에는 입력값을 다시 해싱하는 게 아니라
+  // bcrypt.compare로 "해시가 같은지"만 비교합니다 (auth.ts의 authorize 참고).
   const passwordHash = await bcrypt.hash(input.password, SALT_ROUNDS)
 
   const user = await User.create({
