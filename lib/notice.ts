@@ -13,6 +13,7 @@ export type Notice = {
   authorId: string
   authorName: string
   createdAt: string
+  views: number
 }
 
 // Mongoose 문서를 화면에서 쓰는 평범한 객체(Notice)로 변환합니다.
@@ -23,6 +24,7 @@ type NoticeDocLike = {
   authorId: unknown
   authorName: string
   createdAt?: Date
+  views?: number
 }
 
 function toNotice(doc: NoticeDocLike): Notice {
@@ -33,6 +35,7 @@ function toNotice(doc: NoticeDocLike): Notice {
     authorId: String(doc.authorId),
     authorName: doc.authorName,
     createdAt: (doc.createdAt ?? new Date()).toISOString().slice(0, 10),
+    views: doc.views ?? 0,
   }
 }
 
