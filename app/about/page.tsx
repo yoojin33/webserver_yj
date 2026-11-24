@@ -17,7 +17,7 @@ export default function AboutPage() {
         className="text-sm font-medium text-zinc-950 underline underline-offset-4 dark:text-zinc-50"
       >
         {' '}
-        Home으로 이동하기
+        ← 홈으로 돌아가기
       </Link>
     </div>
   )

@@ -1,7 +1,7 @@
 import dns from 'node:dns'
 import mongoose from 'mongoose'
 
-dns.setServers(['8.8.8.8', '8.8.4.4'])
+dns.setServers(['8.8.8.8', '1.1.1.1'])
 // MongoDB Atlas 클러스터 접속 문자열은 코드에 직접 적지 않고
 // 환경변수(.env.local)로만 관리합니다 — 이것 자체가 이번 학기
 // 계속 강조할 "시크릿 관리" 보안 습관의 첫걸음입니다.
